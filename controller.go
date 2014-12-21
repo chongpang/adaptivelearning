@@ -28,8 +28,8 @@ func SayHello(w http.ResponseWriter, r *http.Request) {
 	funcMap := template.FuncMap{
 		"safehtml": func(text string) template.HTML { return template.HTML(text) },
 	}
-	templates := template.Must(template.New("").Funcs(funcMap).ParseFiles("../view/templates/base.html",
-		"../view/templates/view.html"))
+	templates := template.Must(template.New("").Funcs(funcMap).ParseFiles("view/templates/base.html",
+		"view/templates/view.html"))
 	dat := struct {
 		Title string
 		Body  string
