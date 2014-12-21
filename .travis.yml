@@ -1,0 +1,17 @@
+language: go
+go:
+  - 1.2
+  - tip
+env:
+  - GOARCH=amd64
+
+install: make get-deps
+
+script: script: go test ./...
+
+notifications:
+  email:
+    recipients:
+      - ynpangchong@gmail.com
+    on_success: change
+    on_failure: always
