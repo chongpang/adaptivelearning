@@ -7,7 +7,7 @@ env:
 
 install: make get-deps
 
-script: script: go test ./...
+script: go test ./...
 
 notifications:
   email:
