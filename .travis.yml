@@ -9,7 +9,7 @@ install:
   - go get github.com/gorilla/mux
 
 script:
-  - make test GO_EXTRAFLAGS=-x
+  - go test
 
 notifications:
   email:
