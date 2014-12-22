@@ -18,7 +18,7 @@ func AttachProfiler(router *mux.Router) {
 }
 
 // Handle the index page which contains a form only.
-func Index(w http.ResponseWriter, r *http.Request) {
+func Welcome(w http.ResponseWriter, r *http.Request) {
 
 	// Just for debugging.
 	cwd, _ := os.Getwd()
@@ -50,7 +50,7 @@ func main() {
 	// Serve the static files here.
 	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir("./public/")))
 	r.HandleFunc("/createlo", CreateLearningObject)
-	r.HandleFunc("/", Index)
+	r.HandleFunc("/", Welcome)
 
 	http.ListenAndServe(":8080", r)
 }
