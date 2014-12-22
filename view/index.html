@@ -1,0 +1,69 @@
+{{define "welcome"}}<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Create a Learning Object - Formoid online form</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="blurBg-false" style="background-color:#EBEBEB">
+
+
+
+<!-- Start Formoid form-->
+<link rel="stylesheet" href="/assets/css/solid-blue.css" type="text/css" />
+<script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+<form class="formoid-solid-blue" style="background-color:#FFFFFF;font-size:14px;font-family:'Roboto',Arial,Helvetica,sans-serif;color:#34495E;max-width:480px;min-width:150px" method="post" action="/createlo"><div class="title"><h2>Create a Learning Object</h2></div>
+	<div class="element-input" title="Purpose "><label class="title"><span class="required">*</span></label><div class="item-cont"><input class="large" type="text" name="input" required="required" placeholder="Purpose "/><span class="icon-place"></span></div></div>
+	<div class="element-input" title="Description"><label class="title"><span class="required">*</span></label><div class="item-cont"><input class="large" type="text" name="input1" required="required" placeholder="Description"/><span class="icon-place"></span></div></div>
+	<div class="element-select" title="Format"><label class="title"><span class="required">*</span></label><div class="item-cont"><div class="large"><span><select name="select3" required="required">
+
+		<option value="Image">Image</option>
+		<option value="Video">Video</option>
+		<option value="Andio">Andio</option>
+		<option value="Text">Text</option>
+		<option value="Game">Game</option></select><i></i><span class="icon-place"></span></span></div></div></div>
+	<div class="element-multiple" title="Prerequisites"><label class="title"><span class="required">*</span></label><div class="item-cont"><div class="large"><select data-no-selected="Nothing selected" name="multiple[]" multiple="multiple" required="required">
+
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option></select><span class="icon-place"></span></div></div></div>
+	<div class="element-select" title="Object Type"><label class="title"><span class="required">*</span></label><div class="item-cont"><div class="large"><span><select name="select" required="required">
+
+		<option value="Exercise">Exercise</option>
+		<option value="Simulation">Simulation</option>
+		<option value="Questionaire">Questionaire</option>
+		<option value="Figure">Figure</option>
+		<option value="Index">Index</option>
+		<option value="Table">Table</option>
+		<option value="Narrative Text">Narrative Text</option>
+		<option value="Exam">Exam</option>
+		<option value="Lecture">Lecture</option></select><i></i><span class="icon-place"></span></span></div></div></div>
+	<div class="element-select" title="Interactivity Type"><label class="title"><span class="required">*</span></label><div class="item-cont"><div class="large"><span><select name="select1" required="required">
+
+		<option value="Active">Active</option>
+		<option value="Expositive">Expositive</option>
+		<option value="Mixed">Mixed</option></select><i></i><span class="icon-place"></span></span></div></div></div>
+	<div class="element-select" title="Lnteractivity level"><label class="title"><span class="required">*</span></label><div class="item-cont"><div class="large"><span><select name="select2" required="required">
+
+		<option value="Very Low">Very Low</option>
+		<option value="Low">Low</option>
+		<option value="Meduim">Meduim</option>
+		<option value="High">High</option>
+		<option value="Very High">Very High</option></select><i></i><span class="icon-place"></span></span></div></div></div>
+	<div class="element-select" title="Semantic Density"><label class="title"><span class="required">*</span></label><div class="item-cont"><div class="large"><span><select name="select4" required="required">
+
+		<option value="Very Low">Very Low</option>
+		<option value="Low">Low</option>
+		<option value="Meduim">Meduim</option>
+		<option value="High">High</option>
+		<option value="Very High">Very High</option></select><i></i><span class="icon-place"></span></span></div></div></div>
+<div class="submit"><input type="submit" value="Submit"/></div></form>
+
+<script type="text/javascript" src="/assets/js/solid-blue.js"></script>
+<!-- Stop Formoid form-->
+</body>
+</html>
+{{end}}

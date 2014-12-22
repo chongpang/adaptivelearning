@@ -1,13 +1,12 @@
 package main
 
 import (
-	//    "fmt"
+	"fmt"
 	"github.com/gorilla/mux"
-	//    "math"
 	"html/template"
 	"net/http"
-	//    "path/filepath"
 	"os"
+	"path/filepath"
 )
 import "net/http/pprof"
 
@@ -18,34 +17,40 @@ func AttachProfiler(router *mux.Router) {
 	router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 }
 
-func SayHello(w http.ResponseWriter, r *http.Request) {
-	//    for i := 0; i < 1000000; i++ {
-	//        math.Pow(36, 89)
-	//    }
-	//    fmt.Fprint(w, "Hello!")
-	os.Getwd()
-	//    fmt.Println( filepath.Join( cwd, "../view/templates/base.html" ) )
-	funcMap := template.FuncMap{
-		"safehtml": func(text string) template.HTML { return template.HTML(text) },
-	}
-	templates := template.Must(template.New("").Funcs(funcMap).ParseFiles("view/templates/base.html",
-		"view/templates/view.html"))
-	dat := struct {
-		Title string
-		Body  string
-	}{
-		Title: "Hello, Welcome to Xueduoduo!",
-		Body:  "Welcome to <b>Xueduoduo</b>!",
-	}
-	err := templates.ExecuteTemplate(w, "base", dat)
+// Handle the index page which contains a form only.
+func Index(w http.ResponseWriter, r *http.Request) {
+
+	// Just for debugging.
+	cwd, _ := os.Getwd()
+	fmt.Println(filepath.Join(cwd, "view/index.html"))
+
+	templates, err := template.ParseFiles(filepath.Join(cwd, "view/index.html"))
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "500 Internal Server Error", 500)
+		return
 	}
+	templates.ExecuteTemplate(w, "welcome", nil)
+}
+
+// Handle the create learning object request.
+func CreateLearningObject(w http.ResponseWriter, r *http.Request) {
+	cwd, _ := os.Getwd()
+	templates, err := template.ParseFiles(filepath.Join(cwd, "view/created.html"))
+	if err != nil {
+		http.Error(w, "500 Internal Server Error", 500)
+		return
+	}
+	templates.ExecuteTemplate(w, "created", nil)
 }
 
 func main() {
 	r := mux.NewRouter()
 	AttachProfiler(r)
-	r.HandleFunc("/hello", SayHello)
+
+	// Serve the static files here.
+	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir("./public/")))
+	r.HandleFunc("/createlo", CreateLearningObject)
+	r.HandleFunc("/", Index)
+
 	http.ListenAndServe(":8080", r)
 }

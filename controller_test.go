@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestSayHello(t *testing.T) {
+func Index(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(SayHello))
 	defer ts.Close()
 
