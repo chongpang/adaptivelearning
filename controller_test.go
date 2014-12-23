@@ -27,9 +27,9 @@ func TestCreateLearningObject(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CreateLearningObject))
 	defer ts.Close()
 
-	json := `{"key":"value"}`
+	json := `{"testPurpose":"test purpose","testObjectType":"form","testFromat":"video","testKeywords":"test test test"}`
 	b := strings.NewReader(json)
-	_, err := http.NewRequest("POST", ts.URL, b)
+	_, err := http.Post(ts.URL, "application/json", b)
 	if err != nil {
 		t.Error("unexpected")
 		return
