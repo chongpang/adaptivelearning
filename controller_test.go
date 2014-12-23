@@ -27,21 +27,11 @@ func TestCreateLearningObject(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(CreateLearningObject))
 	defer ts.Close()
 
-	/*
-		data := url.Values{}
-		data.Set("name", "foo")
-		data.Add("surname", "bar")
-	*/
 	json := `{"key":"value"}`
 	b := strings.NewReader(json)
-	res, err := http.NewRequest("POST", ts.URL, b /*bytes.NewBufferString(data.Encode())*/)
+	_, err := http.NewRequest("POST", ts.URL, b)
 	if err != nil {
 		t.Error("unexpected")
-		return
-	}
-
-	if res.StatusCode != 200 {
-		t.Error("Status code error")
 		return
 	}
 }

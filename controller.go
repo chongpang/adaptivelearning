@@ -56,6 +56,8 @@ func CreateLearningObject(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	fmt.Println(m)
+
 	session, err := mgo.Dial("adaptivelearner:81hocyupang@54.187.83.59/learningobjects")
 	if err != nil {
 		panic(err)
