@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -33,7 +34,7 @@ func TestCreateLearningObject(t *testing.T) {
 	*/
 	json := `{"key":"value"}`
 	b := strings.NewReader(json)
-	req, err := http.NewRequest("POST", ts.URL, b /*bytes.NewBufferString(data.Encode())*/)
+	res, err := http.NewRequest("POST", ts.URL, b /*bytes.NewBufferString(data.Encode())*/)
 	if err != nil {
 		t.Error("unexpected")
 		return
