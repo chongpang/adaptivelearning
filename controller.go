@@ -1,14 +1,24 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2"
+	//"gopkg.in/mgo.v2/bson"
 	"html/template"
+	//"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 )
 import "net/http/pprof"
+
+type Person struct {
+	Name  string
+	Phone string
+}
 
 func AttachProfiler(router *mux.Router) {
 	router.HandleFunc("/debug/pprof/", pprof.Index)
@@ -34,13 +44,36 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 
 // Handle the create learning object request.
 func CreateLearningObject(w http.ResponseWriter, r *http.Request) {
-	cwd, _ := os.Getwd()
-	templates, err := template.ParseFiles(filepath.Join(cwd, "view/created.html"))
+
+	//body, err := ioutil.ReadAll(r.Body)
+	//var m map[string]interface{}
+	//err = json.Unmarshal(body, &m)
+	decoder := json.NewDecoder(r.Body)
+
+	var m map[string]interface{}
+	err := decoder.Decode(&m)
 	if err != nil {
-		http.Error(w, "500 Internal Server Error", 500)
-		return
+		panic(err)
 	}
-	templates.ExecuteTemplate(w, "created", nil)
+
+	session, err := mgo.Dial("adaptivelearner:81hocyupang@54.187.83.59/learningobjects")
+	if err != nil {
+		panic(err)
+	}
+	defer session.Close()
+
+	// Optional. Switch the session to a monotonic behavior.
+	session.SetMode(mgo.Monotonic, true)
+
+	c := session.DB("learningobjects").C("learningobjects")
+	err = c.Insert(m)
+	if err != nil {
+		panic(err)
+		log.Fatal(err)
+	}
+
+	fmt.Fprintf(w, "Your learnig object has been created! Thank you!")
+
 }
 
 func main() {
@@ -51,6 +84,5 @@ func main() {
 	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir("./public/")))
 	r.HandleFunc("/createlo", CreateLearningObject)
 	r.HandleFunc("/", Welcome)
-
 	http.ListenAndServe(":8080", r)
 }
