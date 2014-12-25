@@ -4,21 +4,17 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2"
+	//"gopkg.in/mgo.v2"
 	//"gopkg.in/mgo.v2/bson"
 	"html/template"
 	//"io/ioutil"
-	"log"
+	"github.com/syabondama/adaptivelearning/models"
+	//"log"
 	"net/http"
 	"os"
 	"path/filepath"
 )
 import "net/http/pprof"
-
-type Person struct {
-	Name  string
-	Phone string
-}
 
 func AttachProfiler(router *mux.Router) {
 	router.HandleFunc("/debug/pprof/", pprof.Index)
@@ -50,32 +46,32 @@ func CreateLearningObject(w http.ResponseWriter, r *http.Request) {
 	//err = json.Unmarshal(body, &m)
 	decoder := json.NewDecoder(r.Body)
 
+	// Decode json data
 	var m map[string]interface{}
 	err := decoder.Decode(&m)
 	if err != nil {
 		panic(err)
 	}
 
+	id, err := models.SaveLODocObj(m)
+	// Just for testing
 	fmt.Println(m)
-
-	session, err := mgo.Dial("adaptivelearner:81hocyupang@54.187.83.59/learningobjects")
-	if err != nil {
-		panic(err)
-	}
-	defer session.Close()
-
-	// Optional. Switch the session to a monotonic behavior.
-	session.SetMode(mgo.Monotonic, true)
-
-	c := session.DB("learningobjects").C("learningobjects")
-	err = c.Insert(m)
-	if err != nil {
-		panic(err)
-		log.Fatal(err)
-	}
-
+	models.CreateGraphNodeAndRelationships(m, id)
 	fmt.Fprintf(w, "Your learnig object has been created! Thank you!")
 
+}
+
+// Return a list of learning object id and title
+func GetLearningObjectsIds(w http.ResponseWriter, r *http.Request) {
+	ids, err := models.GetLearningObjectsIds()
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if err != nil {
+		w.Write(ids)
+	} else {
+		w.Write([]byte("Error occurs"))
+	}
 }
 
 func main() {
@@ -85,6 +81,7 @@ func main() {
 	// Serve the static files here.
 	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir("./public/")))
 	r.HandleFunc("/createlo", CreateLearningObject)
+	r.HandleFunc("/getlolist", GetLearningObjectsIds)
 	r.HandleFunc("/", Welcome)
 	http.ListenAndServe(":8080", r)
 }
